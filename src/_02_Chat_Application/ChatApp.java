@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 //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
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -21,10 +22,13 @@ public class ChatApp{
 	JLabel label = new JLabel("Chat Room");
 	JTextField field = new JTextField();
 public static void main(String[] args) {
-	new ChatApp().run();
+	int response = JOptionPane.showConfirmDialog(null, "Create new Server", "Natter", JOptionPane.YES_NO_OPTION);
+	if(response == JOptionPane.YES_OPTION){
+		new ChatServer().run();
+	} else if(response==JOptionPane.NO_OPTION) {
+		new ChatClient().run();
+	}
 }
-void run() {
-	new Display().run();
-}
+
 
 }
