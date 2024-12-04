@@ -9,10 +9,12 @@ import java.awt.event.MouseListener;
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class Display implements MouseListener, KeyListener{
+	int messagesReceived=0;
 	String username;
 	static final int WIDTH = 800;
 	JFrame frame = new JFrame();
@@ -21,7 +23,7 @@ public class Display implements MouseListener, KeyListener{
 	JTextField field = new JTextField();
 	//how to detect when someone presses enter in field with text in it?
 	void run() {
-		setup();
+		
 		field.addKeyListener(this);
 		frame.add(panel);
 		frame.setPreferredSize(new Dimension(WIDTH,500));
@@ -29,23 +31,34 @@ public class Display implements MouseListener, KeyListener{
 		panel.addMouseListener(this);
 		panel.add(label);
 		field.setPreferredSize(new Dimension(WIDTH-50,30));
-		System.out.println(field.getSize().width);
 		panel.add(field);
 		field.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setup();
 		frame.pack();
 	}
 	void setup() {
 		
 	}
 	void sendMessage(String message) {
-		recieveMessage(message);
+		
+	}
+	int inputPort() {
+		try {
+			String input=JOptionPane.showInputDialog("Enter port number");
+			if(input==null) {
+				System.exit(0);
+			}
+		int num = Integer.parseInt(input);
+		
+		return num;
+		} catch(NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Invalid input. Enter a number.");
+		return inputPort();
+		}
 	}
 	void recieveMessage(String message) {
-		JLabel lab = new JLabel(username+": "+message);
-		lab.setPreferredSize(new Dimension(WIDTH-50,20));
-		panel.add(lab);
-		frame.pack();
+		
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -88,8 +101,9 @@ public class Display implements MouseListener, KeyListener{
 		if(e.getKeyCode()==10) {
 //enter pressed
 			if(field.getText().length()!=0) {
-				sendMessage(field.getText());
+				String msg = field.getText();
 				field.setText("");
+				sendMessage(msg);
 			}
 		}
 	}
